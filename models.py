@@ -1,6 +1,4 @@
-import time
-
-import psycopg2  # Необходимо импортировать библиотеку для работы с SQLite
+import psycopg2  # Необходимо импортировать библиотеку для работы с postgres
 import copy
 from base_types import IntegerField, VarcharField
 
@@ -260,11 +258,8 @@ class Object:
                 custom_fields.append(' '.join(field_declaration))
 
         # Создаём SQL-запрос для создания таблицы с определёнными полями.
-        create_table_sql = f'''
-        CREATE TABLE IF NOT EXISTS {self.object_type.__name__} ( id SERIAL PRIMARY KEY, 
-        {", ".join(custom_fields)}
-        );
-        '''
+        create_table_sql = f'''CREATE TABLE IF NOT EXISTS {self.object_type.__name__} ( id SERIAL PRIMARY KEY, 
+        {", ".join(custom_fields)});'''
 
         # Выполняем SQL-запрос.
         cursor.execute(create_table_sql)
