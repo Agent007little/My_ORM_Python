@@ -1,10 +1,5 @@
 import models as models
 from base_types import IntegerField, VarcharField
-from pathlib import Path
-import sys
-
-PATH = Path(__file__).absolute().parent.parent
-sys.path.append(str(PATH))
 
 
 @models.simple_orm
