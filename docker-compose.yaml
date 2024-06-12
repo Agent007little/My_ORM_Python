@@ -1,0 +1,24 @@
+version: '3.10'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    restart: on-failure # у меня приложение запускается раньше БД, поэтому ставлю на рестарт.
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: orm_postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+
+
+
+
