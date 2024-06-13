@@ -20,8 +20,4 @@ class Employee(models.Model):
     mail_count = IntegerField()
 
 
-d = Defect.objects.add(Defect(1, "defect", "job", "unit", 1))
-e = Employee.objects.add(Employee(1, "first name", "second name", "surname", 1))
-Defect.objects.get(code=1)
-Defect.objects.delete(code=1)
-print("Работает")
+

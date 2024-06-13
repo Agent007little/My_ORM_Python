@@ -95,11 +95,12 @@ class Object:
 
         object_type_name = self.object_type.__name__
 
-        upsert_sql = f'INSERT OR REPLACE INTO {object_type_name} ({", ".join(obj.__dict__.keys())}) VALUES ' \
-                     f'({", ".join(["%s"] * len(obj.__dict__))});'
+        upsert_sql = f'INSERT INTO {object_type_name} ({", ".join(obj.__dict__.keys())}) VALUES ' \
+                     f'({", ".join(["%s"] * len(obj.__dict__))}) ON CONFLICT ({list(obj.__dict__.keys())[0]}) ' \
+                     f'DO UPDATE SET {"".join([", ".join(key + " = %s" for key in obj.__dict__.keys())])};'
 
-        values = tuple(d.values())
-        cursor.execute(upsert_sql, values)
+        values = list(d.values())
+        cursor.execute(upsert_sql, tuple(values + values))
         conn.commit()
         conn.close()
         return obj
@@ -230,7 +231,7 @@ class Object:
             password='12345',
             database=db_name,
             port="5432"
-            )
+        )
         cursor = conn.cursor()
 
         # Создаём список custom_fields для хранения определений полей таблицы.
